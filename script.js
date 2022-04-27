@@ -39,11 +39,24 @@ class Particle {
     this.density = (Math.random() * 30) + 1;
   }
   draw() {
-    ctx.fillStyle = 'white';
+    ctx.fillStyle = 'pink';
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
     ctx.closePath();
     ctx.fill();
+  }
+  update() {
+    let dx = mouse.x - this.x;
+    let dy = mouse.y - this.y;
+    let distance = Math.sqrt(dx * dx + dy * dy);
+    let forceDirectionX = dx / distance;
+    let forceDirectionY = dy / distance;
+    if (distance < 300) {
+      this.x += forceDirectionX;
+      this.y += forceDirectionY;
+    } else {
+      this.size = 3;
+    }
   }
 }
 
@@ -66,6 +79,7 @@ const animate = () => {
   ctx.clearRect(0,0, canvas.width, canvas.height);
   for (let i = 0; i < particleArray.length; i++) {
     particleArray[i].draw();
+    particleArray[i].update();
   }
   requestAnimationFrame(animate);
 }
